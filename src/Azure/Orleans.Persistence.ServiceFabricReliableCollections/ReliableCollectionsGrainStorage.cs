@@ -24,8 +24,14 @@ namespace Orleans.Hosting
         private readonly ILogger logger;
 
         /// <summary> Default constructor </summary>
-        public ReliableCollectionsGrainStorage(string name, ReliableCollectionsStorageOptions options, IOptions<ClusterOptions> clusterOptions, SerializationManager serializationManager,
-            IGrainFactory grainFactory, ITypeResolver typeResolver, ILoggerFactory loggerFactory)
+        public ReliableCollectionsGrainStorage(string name,
+            IReliableStateManager stateManager,
+            ReliableCollectionsStorageOptions options,
+            IOptions<ClusterOptions> clusterOptions,
+            SerializationManager serializationManager,
+            IGrainFactory grainFactory,
+            ITypeResolver typeResolver,
+            ILoggerFactory loggerFactory)
         {
             this.options = options;
             this.clusterOptions = clusterOptions.Value;
