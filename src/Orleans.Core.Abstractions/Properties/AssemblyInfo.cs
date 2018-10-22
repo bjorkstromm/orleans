@@ -6,6 +6,7 @@
 [assembly: InternalsVisibleTo("Orleans.TestingHost.AppDomain")]
 [assembly: InternalsVisibleTo("OrleansManager")]
 [assembly: InternalsVisibleTo("Orleans.Persistence.ServiceFabricReliableCollections")]
+[assembly: InternalsVisibleTo("Orleans.Clustering.ServiceFabricReliableCollections")]
 
 [assembly: InternalsVisibleTo("DefaultCluster.Tests")]
 [assembly: InternalsVisibleTo("NonSilo.Tests")]

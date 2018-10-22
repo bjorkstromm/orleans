@@ -2,10 +2,11 @@
 {
     public sealed class ReliableCollectionsStorageOptions
     {
+        public string StateName { get; set; }
+
         /// <summary>
-        /// Stage of silo lifecycle where storage should be initialized.  Storage must be initialized prior to use.
+        /// Stage of silo lifecycle where storage should be initialized.  Storage must be initialzed prior to use.
         /// </summary>
-        public int InitStage { get; set; } = DEFAULT_INIT_STAGE;
-        public const int DEFAULT_INIT_STAGE = ServiceLifecycleStage.ApplicationServices;
+        public int InitStage { get; set; } = ServiceLifecycleStage.ApplicationServices;
     }
 }

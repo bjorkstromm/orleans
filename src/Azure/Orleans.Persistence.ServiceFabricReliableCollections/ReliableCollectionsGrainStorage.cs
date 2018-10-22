@@ -23,7 +23,6 @@ namespace Orleans.Hosting
         private readonly SerializationManager serializationManager;
         private readonly IGrainFactory grainFactory;
         private readonly ITypeResolver typeResolver;
-        private readonly ILoggerFactory loggerFactory;
         private readonly ILogger logger;
 
         private IReliableDictionary<string, byte[]> stateDictionary;
@@ -46,9 +45,8 @@ namespace Orleans.Hosting
             this.serializationManager = serializationManager;
             this.grainFactory = grainFactory;
             this.typeResolver = typeResolver;
-            this.loggerFactory = loggerFactory;
             var loggerName = $"{typeof(ReliableCollectionsGrainStorage).FullName}.{name}";
-            this.logger = this.loggerFactory.CreateLogger(loggerName);
+            this.logger = loggerFactory.CreateLogger(loggerName);
         }
 
         public async Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
