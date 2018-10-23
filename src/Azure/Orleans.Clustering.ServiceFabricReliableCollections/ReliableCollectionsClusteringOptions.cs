@@ -2,6 +2,6 @@
 {
     public sealed class ReliableCollectionsClusteringOptions
     {
-        public string StateName { get; set; };
+        public string StateName { get; set; }
     }
 }

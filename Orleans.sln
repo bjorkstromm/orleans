@@ -224,11 +224,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Transactions.TestKi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Transactions.TestKit.xUnit", "src\Orleans.Transactions.Testkit.Xunit\Orleans.Transactions.TestKit.xUnit.csproj", "{B8ABE746-C76F-4E0E-86A5-744E85A55CE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.Persistence.ServiceFabricReliableCollections", "Orleans.Persistence.ServiceFabricReliableCollections\Orleans.Persistence.ServiceFabricReliableCollections.csproj", "{1F588D15-731D-4E71-8FF8-2C1C7F7DD720}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Persistence.ServiceFabricReliableCollections", "src\Azure\Orleans.Persistence.ServiceFabricReliableCollections\Orleans.Persistence.ServiceFabricReliableCollections.csproj", "{1F588D15-731D-4E71-8FF8-2C1C7F7DD720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "src\Azure\Orleans.Persistence.ServiceFabricReliableCollections", "src\Azure\Orleans.Persistence.ServiceFabricReliableCollections\Orleans.Persistence.ServiceFabricReliableCollections.csproj", "{1F588D15-731D-4E71-8FF8-2C1C7F7DD720}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.Clustering.ServiceFabricReliableCollections", "src\Azure\Orleans.Clustering.ServiceFabricReliableCollections\Orleans.Clustering.ServiceFabricReliableCollections.csproj", "{72D20863-5AEB-4DF2-9FB9-BE38EE74203B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.Clustering.ServiceFabricReliableCollections", "src\Azure\Orleans.Clustering.ServiceFabricReliableCollections\Orleans.Clustering.ServiceFabricReliableCollections.csproj", "{72D20863-5AEB-4DF2-9FB9-BE38EE74203B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServiceFabricMesh", "test\Extensions\TestServiceFabricMesh\TestServiceFabricMesh.csproj", "{82BD72D5-EED1-455C-BD31-64BD466B86CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1392,6 +1392,18 @@ Global
 		{72D20863-5AEB-4DF2-9FB9-BE38EE74203B}.Release|x64.Build.0 = Release|Any CPU
 		{72D20863-5AEB-4DF2-9FB9-BE38EE74203B}.Release|x86.ActiveCfg = Release|Any CPU
 		{72D20863-5AEB-4DF2-9FB9-BE38EE74203B}.Release|x86.Build.0 = Release|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Release|x64.Build.0 = Release|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1507,6 +1519,7 @@ Global
 		{B8ABE746-C76F-4E0E-86A5-744E85A55CE8} = {3189037B-208D-40A1-A561-169D77D9BB5A}
 		{1F588D15-731D-4E71-8FF8-2C1C7F7DD720} = {A15BD3B2-513B-449C-A2E9-81DA2DE2FF92}
 		{72D20863-5AEB-4DF2-9FB9-BE38EE74203B} = {A15BD3B2-513B-449C-A2E9-81DA2DE2FF92}
+		{82BD72D5-EED1-455C-BD31-64BD466B86CF} = {082D25DB-70CA-48F4-93E0-EC3455F494B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7BFB3429-B5BB-4DB1-95B4-67D77A864952}

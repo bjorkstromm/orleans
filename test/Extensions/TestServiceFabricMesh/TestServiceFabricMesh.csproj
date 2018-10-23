@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>TestServiceFabricMesh</RootNamespace>
+    <AssemblyName>TestServiceFabricMesh</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="$(xUnitVersion)" />
+    <PackageReference Include="Xunit.SkippableFact" Version="$(XunitSkippableFactVersion)" />
+    <PackageReference Include="FluentAssertions" Version="$(FluentAssertionsVersion)" />
+    <PackageReference Include="ServiceFabric.Mocks" Version="3.3.11" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="$(xUnitVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SourceRoot)src\Azure\Orleans.Clustering.ServiceFabricReliableCollections\Orleans.Clustering.ServiceFabricReliableCollections.csproj" />
+    <ProjectReference Include="$(SourceRoot)src\Azure\Orleans.Persistence.ServiceFabricReliableCollections\Orleans.Persistence.ServiceFabricReliableCollections.csproj" />
+    <ProjectReference Include="$(SourceRoot)src\Orleans.TestingHost\Orleans.TestingHost.csproj" />
+    <ProjectReference Include="$(SourceRoot)test\TestInfrastructure\Orleans.TestingHost.Legacy\Orleans.TestingHost.Legacy.csproj" />
+    <ProjectReference Include="$(SourceRoot)test\TesterInternal\TesterInternal.csproj" />
+    <ProjectReference Include="$(SourceRoot)test\Tester\Tester.csproj" />
+    <ProjectReference Include="$(SourceRoot)test\TestInfrastructure\TestExtensions\TestExtensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="TestServiceFabricMesh.xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
