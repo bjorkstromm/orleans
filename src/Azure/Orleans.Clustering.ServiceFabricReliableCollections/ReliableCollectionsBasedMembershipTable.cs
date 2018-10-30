@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.ServiceFabric.Data;
@@ -54,30 +57,95 @@ namespace Orleans.Hosting
             using (var tx = this.stateManager.CreateTransaction())
             {
                 var storage = await this.GetMembershipDictionary();
-                await storage.SetAsync(tx, entry.SiloAddress, entry);
-                await tx.CommitAsync();
-                return true;
+
+                var added = await storage.TryAddAsync(tx, entry.SiloAddress, entry);
+
+                if (added)
+                {
+                    await tx.CommitAsync();
+                }
+                
+                return added;
             }
         }
 
-        public Task<MembershipTableData> ReadAll()
+        public async Task<MembershipTableData> ReadAll()
         {
-            throw new System.NotImplementedException();
+            var tableData = new List<Tuple<MembershipEntry, string>>();
+
+            using (var tx = this.stateManager.CreateTransaction())
+            {
+                var storage = await this.GetMembershipDictionary();
+                var asyncEnumerable = await storage.CreateEnumerableAsync(tx);
+
+                using (var e = asyncEnumerable.GetAsyncEnumerator())
+                {
+                    while (await e.MoveNextAsync(CancellationToken.None))
+                    {
+                        tableData.Add(Tuple.Create(e.Current.Value, "TODO..."));
+                    }
+                }
+            }
+
+            return new MembershipTableData(tableData, _tableVersion);
         }
 
-        public Task<MembershipTableData> ReadRow(SiloAddress key)
+        public async Task<MembershipTableData> ReadRow(SiloAddress key)
         {
-            throw new System.NotImplementedException();
+            using (var tx = this.stateManager.CreateTransaction())
+            {
+                var storage = await this.GetMembershipDictionary();
+
+                var data = await storage.TryGetValueAsync(tx, key);
+
+                return data.HasValue ?
+                    new MembershipTableData(Tuple.Create(data.Value, "TODO..."), _tableVersion) :
+                    new MembershipTableData(_tableVersion);
+            }
         }
 
-        public Task UpdateIAmAlive(MembershipEntry entry)
+        public async Task UpdateIAmAlive(MembershipEntry entry)
         {
-            throw new System.NotImplementedException();
+            using (var tx = this.stateManager.CreateTransaction())
+            {
+                var storage = await this.GetMembershipDictionary();
+                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress);
+                
+                if (!data.HasValue)
+                {
+                    return;
+                }
+
+                var newEntry = new MembershipEntry();
+                newEntry.Update(data.Value);
+                newEntry.IAmAliveTime = entry.IAmAliveTime;
+
+                await storage.SetAsync(tx, entry.SiloAddress, newEntry);
+
+                await tx.CommitAsync();
+            }
         }
 
-        public Task<bool> UpdateRow(MembershipEntry entry, string etag, TableVersion tableVersion)
+        public async Task<bool> UpdateRow(MembershipEntry entry, string etag, TableVersion tableVersion)
         {
-            throw new System.NotImplementedException();
+            using (var tx = this.stateManager.CreateTransaction())
+            {
+                var storage = await this.GetMembershipDictionary();
+                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress);
+
+                if (!data.HasValue)
+                {
+                    return false;
+                }
+
+                var newEntry = new MembershipEntry();
+                newEntry.Update(entry);
+
+                await storage.SetAsync(tx, entry.SiloAddress, newEntry);
+
+                await tx.CommitAsync();
+                return true;
+            }
         }
 
         private ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>> GetMembershipDictionary()

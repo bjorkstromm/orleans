@@ -45,65 +45,71 @@ namespace UnitTests.MembershipTests
 
         protected override IGatewayListProvider CreateGatewayListProvider(ILogger logger)
         {
-            return new ReliableCollectionsGatewayListProvider();
+            var options = new ReliableCollectionsGatewayOptions();
+
+            return new ReliableCollectionsGatewayListProvider(
+                ReliableStateManager.Value,
+                loggerFactory,
+                Options.Create(options),
+                clusterOptions);
         }
 
         protected override Task<string> GetConnectionString()
         {
-            return Task.FromResult<string>(null);
+            return Task.FromResult("noop");
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public void MembershipTable_ServiceFabricMesh_Init()
         {
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_GetGateways()
         {
             await MembershipTable_GetGateways();
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_ReadAll_EmptyTable()
         {
             await MembershipTable_ReadAll_EmptyTable();
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_InsertRow()
         {
-            await MembershipTable_InsertRow();
+            await MembershipTable_InsertRow(extendedProtocol: false); // TODO...
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_ReadRow_Insert_Read()
         {
-            await MembershipTable_ReadRow_Insert_Read();
+            await MembershipTable_ReadRow_Insert_Read(extendedProtocol: false); // TODO...
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_ReadAll_Insert_ReadAll()
         {
-            await MembershipTable_ReadAll_Insert_ReadAll();
+            await MembershipTable_ReadAll_Insert_ReadAll(extendedProtocol: false); // TODO...
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_UpdateRow()
         {
-            await MembershipTable_UpdateRow();
+            await MembershipTable_UpdateRow(extendedProtocol: false); // TODO...
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_UpdateRowInParallel()
         {
-            await MembershipTable_UpdateRowInParallel();
+            await MembershipTable_UpdateRowInParallel(extendedProtocol: false); // TODO...
         }
 
-        [SkippableFact]
+        [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_UpdateIAmAlive()
         {
-            await MembershipTable_UpdateIAmAlive();
+            await MembershipTable_UpdateIAmAlive(extendedProtocol: false); // TODO...
         }
     }
 }
