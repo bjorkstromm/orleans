@@ -7,8 +7,8 @@ using Xunit;
 using Orleans.Hosting;
 using Microsoft.ServiceFabric.Data;
 using System;
-using ServiceFabric.Mocks;
 using Microsoft.Extensions.Options;
+using Microsoft.ServiceFabric.Mesh.Data.Collections;
 
 namespace UnitTests.MembershipTests
 {
@@ -30,7 +30,11 @@ namespace UnitTests.MembershipTests
             return filters;
         }
 
-        private readonly Lazy<IReliableStateManager> ReliableStateManager = new Lazy<IReliableStateManager>(() => new MockReliableStateManager());
+        private readonly Lazy<IReliableStateManager> ReliableStateManager = new Lazy<IReliableStateManager>(() =>
+        {
+            ReliableCollectionsExtensions.UseReliableCollectionsService("TestServiceFabricMesh", ReliableCollectionMode.Volatile);
+            return ReliableCollectionsExtensions.GetReliableStateManager();
+        });
 
         protected override IMembershipTable CreateMembershipTable(ILogger logger)
         {

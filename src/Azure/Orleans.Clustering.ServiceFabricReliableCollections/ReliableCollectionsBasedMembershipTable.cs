@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +20,7 @@ namespace Orleans.Hosting
         private readonly IReliableStateManager stateManager;
         private readonly ILogger logger;
 
-        private IReliableDictionary<SiloAddress, MembershipEntry> membershipDictionary;
+        private IReliableDictionary<string, MembershipEntry> membershipDictionary;
         private readonly AsyncLock asyncLock = new AsyncLock();
 
         public ReliableCollectionsBasedMembershipTable(
@@ -58,7 +58,7 @@ namespace Orleans.Hosting
             {
                 var storage = await this.GetMembershipDictionary();
 
-                var added = await storage.TryAddAsync(tx, entry.SiloAddress, entry);
+                var added = await storage.TryAddAsync(tx, entry.SiloAddress.ToParsableString(), entry);
 
                 if (added)
                 {
@@ -96,7 +96,7 @@ namespace Orleans.Hosting
             {
                 var storage = await this.GetMembershipDictionary();
 
-                var data = await storage.TryGetValueAsync(tx, key);
+                var data = await storage.TryGetValueAsync(tx, key.ToParsableString());
 
                 return data.HasValue ?
                     new MembershipTableData(Tuple.Create(data.Value, "TODO..."), _tableVersion) :
@@ -109,7 +109,7 @@ namespace Orleans.Hosting
             using (var tx = this.stateManager.CreateTransaction())
             {
                 var storage = await this.GetMembershipDictionary();
-                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress);
+                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString());
                 
                 if (!data.HasValue)
                 {
@@ -120,7 +120,7 @@ namespace Orleans.Hosting
                 newEntry.Update(data.Value);
                 newEntry.IAmAliveTime = entry.IAmAliveTime;
 
-                await storage.SetAsync(tx, entry.SiloAddress, newEntry);
+                await storage.SetAsync(tx, entry.SiloAddress.ToParsableString(), newEntry);
 
                 await tx.CommitAsync();
             }
@@ -131,7 +131,7 @@ namespace Orleans.Hosting
             using (var tx = this.stateManager.CreateTransaction())
             {
                 var storage = await this.GetMembershipDictionary();
-                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress);
+                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString());
 
                 if (!data.HasValue)
                 {
@@ -141,26 +141,26 @@ namespace Orleans.Hosting
                 var newEntry = new MembershipEntry();
                 newEntry.Update(entry);
 
-                await storage.SetAsync(tx, entry.SiloAddress, newEntry);
+                await storage.SetAsync(tx, entry.SiloAddress.ToParsableString(), newEntry);
 
                 await tx.CommitAsync();
                 return true;
             }
         }
 
-        private ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>> GetMembershipDictionary()
+        private ValueTask<IReliableDictionary<string, MembershipEntry>> GetMembershipDictionary()
         {
-            if (this.membershipDictionary != null) return new ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>>(this.membershipDictionary);
+            if (this.membershipDictionary != null) return new ValueTask<IReliableDictionary<string, MembershipEntry>>(this.membershipDictionary);
 
             return Async();
 
-            async ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>> Async()
+            async ValueTask<IReliableDictionary<string, MembershipEntry>> Async()
             {
                 using (await asyncLock.LockAsync())
                 {
                     if (this.membershipDictionary == null)
                     {
-                        this.membershipDictionary = await this.stateManager.GetOrAddAsync<IReliableDictionary<SiloAddress, MembershipEntry>>(this.options.StateName ?? clusterOptions.ClusterId);
+                        this.membershipDictionary = await this.stateManager.GetOrAddAsync<IReliableDictionary<string, MembershipEntry>>(this.options.StateName ?? clusterOptions.ClusterId);
                     }
                     return this.membershipDictionary;
                 }

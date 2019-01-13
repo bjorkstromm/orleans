@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +19,7 @@ namespace Orleans.Hosting
         private readonly IReliableStateManager stateManager;
         private readonly ILogger logger;
 
-        private IReliableDictionary<SiloAddress, MembershipEntry> membershipDictionary;
+        private IReliableDictionary<string, MembershipEntry> membershipDictionary;
         private readonly AsyncLock asyncLock = new AsyncLock();
 
         public TimeSpan MaxStaleness => TimeSpan.FromMinutes(1); // TODO...
@@ -52,7 +52,7 @@ namespace Orleans.Hosting
                 {
                     while (await e.MoveNextAsync(CancellationToken.None))
                     {
-                        gateways.Add(e.Current.Key.ToGatewayUri());
+                        gateways.Add(SiloAddress.FromParsableString(e.Current.Key).ToGatewayUri());
                     }
                 }
             }
@@ -66,19 +66,19 @@ namespace Orleans.Hosting
         }
 
         // TODO...
-        private ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>> GetMembershipDictionary()
+        private ValueTask<IReliableDictionary<string, MembershipEntry>> GetMembershipDictionary()
         {
-            if (this.membershipDictionary != null) return new ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>>(this.membershipDictionary);
+            if (this.membershipDictionary != null) return new ValueTask<IReliableDictionary<string, MembershipEntry>>(this.membershipDictionary);
 
             return Async();
 
-            async ValueTask<IReliableDictionary<SiloAddress, MembershipEntry>> Async()
+            async ValueTask<IReliableDictionary<string, MembershipEntry>> Async()
             {
                 using (await asyncLock.LockAsync())
                 {
                     if (this.membershipDictionary == null)
                     {
-                        this.membershipDictionary = await this.stateManager.GetOrAddAsync<IReliableDictionary<SiloAddress, MembershipEntry>>(this.options.StateName ?? clusterOptions.ClusterId);
+                        this.membershipDictionary = await this.stateManager.GetOrAddAsync<IReliableDictionary<string, MembershipEntry>>(this.options.StateName ?? clusterOptions.ClusterId);
                     }
                     return this.membershipDictionary;
                 }
