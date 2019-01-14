@@ -14,7 +14,7 @@ namespace Orleans.Hosting
 {
     internal sealed class ReliableCollectionsBasedMembershipTable : IMembershipTable
     {
-        public static readonly TableVersion _tableVersion = new TableVersion(0, "0");
+        public static readonly TableVersion _tableVersion = new TableVersion(0, "1");
 
         private readonly ReliableCollectionsClusteringOptions options;
         private readonly ClusterOptions clusterOptions;
@@ -134,7 +134,7 @@ namespace Orleans.Hosting
             using (var tx = this.stateManager.CreateTransaction())
             {
                 var storage = await this.GetMembershipDictionary();
-                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString());
+                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString(), LockMode.Update);
                 
                 if (!data.HasValue)
                 {
@@ -158,7 +158,7 @@ namespace Orleans.Hosting
             using (var tx = this.stateManager.CreateTransaction())
             {
                 var storage = await this.GetMembershipDictionary();
-                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString());
+                var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString(), LockMode.Update);
 
                 if (!data.HasValue ||
                     etag != data.Value.eTag)

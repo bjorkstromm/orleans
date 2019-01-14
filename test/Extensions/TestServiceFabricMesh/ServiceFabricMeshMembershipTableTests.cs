@@ -83,37 +83,37 @@ namespace UnitTests.MembershipTests
         [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_InsertRow()
         {
-            await MembershipTable_InsertRow(extendedProtocol: false); // TODO...
+            await MembershipTable_InsertRow(extendedProtocol: false);
         }
 
         [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_ReadRow_Insert_Read()
         {
-            await MembershipTable_ReadRow_Insert_Read(extendedProtocol: false); // TODO...
+            await MembershipTable_ReadRow_Insert_Read(extendedProtocol: false);
         }
 
         [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_ReadAll_Insert_ReadAll()
         {
-            await MembershipTable_ReadAll_Insert_ReadAll(extendedProtocol: false); // TODO...
+            await MembershipTable_ReadAll_Insert_ReadAll(extendedProtocol: false);
         }
 
         [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_UpdateRow()
         {
-            await MembershipTable_UpdateRow(extendedProtocol: false); // TODO...
+            await MembershipTable_UpdateRow(extendedProtocol: false);
         }
 
         [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_UpdateRowInParallel()
         {
-            await MembershipTable_UpdateRowInParallel(extendedProtocol: false); // TODO...
+            await MembershipTable_UpdateRowInParallel(extendedProtocol: false);
         }
 
         [SkippableFact, TestCategory("Functional")]
         public async Task MembershipTable_ServiceFabricMesh_UpdateIAmAlive()
         {
-            await MembershipTable_UpdateIAmAlive(extendedProtocol: false); // TODO...
+            await MembershipTable_UpdateIAmAlive(extendedProtocol: false);
         }
     }
 }
