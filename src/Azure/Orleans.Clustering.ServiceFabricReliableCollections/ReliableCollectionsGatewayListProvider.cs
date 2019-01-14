@@ -53,7 +53,10 @@ namespace Orleans.Hosting
                 {
                     while (await e.MoveNextAsync(CancellationToken.None))
                     {
-                        gateways.Add(SiloAddress.FromParsableString(e.Current.Key).ToGatewayUri());
+                        if (e.Current.Value.Status == SiloStatus.Active && e.Current.Value.ProxyPort != 0)
+                        {
+                            gateways.Add(SiloAddress.FromParsableString(e.Current.Key).ToGatewayUri());
+                        }
                     }
                 }
             }

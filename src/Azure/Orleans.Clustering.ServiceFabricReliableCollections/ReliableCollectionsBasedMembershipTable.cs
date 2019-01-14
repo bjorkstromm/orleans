@@ -107,7 +107,7 @@ namespace Orleans.Hosting
                 {
                     while (await e.MoveNextAsync(CancellationToken.None))
                     {
-                        tableData.Add(Tuple.Create(e.Current.Value.ToMembershipEntry(), "TODO..."));
+                        tableData.Add(Tuple.Create(e.Current.Value.ToMembershipEntry(), e.Current.Value.eTag));
                     }
                 }
             }
@@ -124,7 +124,7 @@ namespace Orleans.Hosting
                 var data = await storage.TryGetValueAsync(tx, key.ToParsableString());
 
                 return data.HasValue ?
-                    new MembershipTableData(Tuple.Create(data.Value.ToMembershipEntry(), "TODO..."), _tableVersion) :
+                    new MembershipTableData(Tuple.Create(data.Value.ToMembershipEntry(), data.Value.eTag), _tableVersion) :
                     new MembershipTableData(_tableVersion);
             }
         }
@@ -147,7 +147,7 @@ namespace Orleans.Hosting
 
                 await storage.SetAsync(tx,
                     entry.SiloAddress.ToParsableString(),
-                    newEntry.ToSerializable());
+                    newEntry.ToSerializable(data.Value.eTag));
 
                 await tx.CommitAsync();
             }
@@ -160,7 +160,8 @@ namespace Orleans.Hosting
                 var storage = await this.GetMembershipDictionary();
                 var data = await storage.TryGetValueAsync(tx, entry.SiloAddress.ToParsableString());
 
-                if (!data.HasValue)
+                if (!data.HasValue ||
+                    etag != data.Value.eTag)
                 {
                     return false;
                 }

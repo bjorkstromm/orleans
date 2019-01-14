@@ -16,6 +16,7 @@ namespace Orleans.Clustering.ServiceFabricReliableCollections
         public DateTime StartTime { get; set; }
         public DateTime IAmAliveTime { get; set; }
         public List<SerializableSuspectTime> SuspectTimes { get; set; }
+        public string eTag { get; set; }
 
         public MembershipEntry ToMembershipEntry()
         {
